@@ -12,7 +12,7 @@ public class RestaurantCheckManager() {
     while (!stop.equals("y")) {
         //changes
         //Example save
-
+        //sjajdjsd
 
         stop = sc.next();
         stop = stop.toLowerCase();
