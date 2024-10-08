@@ -10,7 +10,7 @@ public class RestaurantCheckManager() {
     double tipAmount;
     
     while (!stop.equals("y")) {
-
+        //changes
 
 
         stop = sc.next();
