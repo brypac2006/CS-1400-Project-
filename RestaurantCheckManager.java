@@ -11,6 +11,7 @@ public class RestaurantCheckManager() {
     
     while (!stop.equals("y")) {
         //changes
+        //Example save
 
 
         stop = sc.next();
