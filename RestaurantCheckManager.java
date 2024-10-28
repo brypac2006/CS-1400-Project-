@@ -7,6 +7,7 @@ public class RestaurantCheckManager {
 
         double totalSales = 0.0;
         double totalTips = 0.0;
+        double completeTotal = 0.0;
         int checkCount = 0;
 
         while (true) {
@@ -16,31 +17,34 @@ public class RestaurantCheckManager {
             System.out.printf("Tip amount: ");
             double tipAmount = scanner.nextDouble();
 
-            double totalAmount = saleAmount + tipAmount;
+            System.out.printf("Total amount: ");
+            double totalAmount = scanner.nextDouble();
 
-            // Handle edge cases
-            if (totalAmount == 0) {
-                totalAmount = saleAmount + tipAmount;
-            } else if (tipAmount == 0) {
+            // Handle edge cases and auto-calculate tip
+            if (tipAmount == 0) {
                 tipAmount = totalAmount - saleAmount;
-                if (tipAmount < 0) tipAmount = 0;
-            } else if (totalAmount < saleAmount) {
-                totalAmount = saleAmount;
+                if (tipAmount < 0) tipAmount = 0; // Negative tips become 0
+            } 
+            
+            if (totalAmount < saleAmount) {
+                totalAmount = saleAmount;  // Assume no tip if total < sale amount
                 tipAmount = 0;
             }
 
             // Update cumulative totals
             totalSales += saleAmount;
             totalTips += tipAmount;
+            completeTotal = totalSales + totalTips;
             checkCount++;
 
             // Display cumulative results after each check
             System.out.println("\nCheck count: " + checkCount);
             System.out.printf("Total sale so far: %.2f\n", totalSales);
             System.out.printf("Total pooled tip so far: %.2f\n", totalTips);
+            System.out.printf("Total complete amount: %.2f\n", completeTotal);
 
             // Prompt to stop or continue
-            System.out.print("Do you want to stop (y/Y to stop): ");
+            System.out.print("Do you want to stop (y/n): ");
             String input = scanner.next();
             if (input.equalsIgnoreCase("y")) break;
         }
