@@ -1,0 +1,98 @@
+import java.util.Scanner;
+
+public class RestaurantCheckManager {
+
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+
+        double totalSales = 0;
+        double totalTips = 0;
+        int numChecks = 0;
+        boolean continueInput = true;
+
+        while (continueInput) {
+            // Get the marked cost, tip amount, and total amount
+            System.out.print("Enter the marked cost of items: ");
+            double markedCost = scanner.nextDouble();
+
+            System.out.print("Enter the tip amount (or -1 if not provided): ");
+            double tipAmount = scanner.nextDouble();
+
+            System.out.print("Enter the total amount (or -1 if not provided): ");
+            double totalAmount = scanner.nextDouble();
+
+            // Handle edge cases
+            if (tipAmount == -1 && totalAmount != -1) {
+                // Case 2: Total is entered but no tip, calculate tip as total - marked cost
+                tipAmount = totalAmount - markedCost;
+                if (tipAmount < 0) {
+                    tipAmount = 0; // If calculated tip is negative, consider it 0
+                }
+            } else if (totalAmount == -1 && tipAmount != -1) {
+                // Case 1: Tip is entered but no total, calculate total as marked cost + tip
+                totalAmount = markedCost + tipAmount;
+            } else if (tipAmount == -1 && totalAmount == -1) {
+                // Case 3: Neither tip nor total entered, tip is 0 and total is marked cost
+                tipAmount = 0;
+                totalAmount = markedCost;
+            } else if (totalAmount != markedCost + tipAmount) {
+                // Case 4: Total and tip do not tally correctly
+                totalAmount = Math.max(totalAmount, markedCost); // Accept total as is
+                tipAmount = totalAmount - markedCost;
+                if (tipAmount < 0) {
+                    tipAmount = 0; // If calculated tip is negative, set to 0
+                }
+            } else if (totalAmount < markedCost) {
+                // Case 5: Total is less than marked cost, assume tip is 0 and total is marked cost
+                totalAmount = markedCost;
+                tipAmount = 0;
+            }
+
+            // Update total sales, total tips, and number of checks
+            totalSales += totalAmount;
+            totalTips += tipAmount;
+            numChecks++;
+
+            // Ask the manager if they want to continue
+            System.out.print("Do you want to enter another check? (y/n): ");
+            String continueResponse = scanner.next();
+            if (continueResponse.equalsIgnoreCase("n")) {
+                continueInput = false;
+            }
+        }
+
+        // Display the total sales and tips
+        System.out.printf("Total sales amount: $%.2f%n", totalSales);
+        System.out.printf("Total tips amount: $%.2f%n", totalTips);
+
+        // Now divide the pooled tips among employees
+        divideTips(totalTips);
+
+        scanner.close();
+    }
+
+    public static void divideTips(double totalTips) {
+        // Tip distribution plan
+        double kitchenShare = totalTips * 0.10;  // 10% for kitchen
+        double serverShare = totalTips * 0.80;   // 80% for servers
+        double hostShare = totalTips * 0.05;     // 5% for host/hostess
+        double busserShare = totalTips * 0.05;   // 5% for busser
+
+        // Further breakdown for kitchen
+        double chefShare = kitchenShare * 0.50;      // 50% of kitchen share to chef
+        double sousChefShare = kitchenShare * 0.30;  // 30% of kitchen share to sous-chef
+        double kitchenAidShare = kitchenShare * 0.20; // 20% of kitchen share to kitchen aid
+
+        // Servers are split equally among the 2 present
+        double serverSharePerPerson = serverShare / 2;
+
+        // Display tip division with formatted output to 2 decimal places
+        System.out.println("\nTip distribution:");
+        System.out.printf("Chef receives: $%.2f%n", chefShare);
+        System.out.printf("Sous-chef receives: $%.2f%n", sousChefShare);
+        System.out.printf("Kitchen aid receives: $%.2f%n", kitchenAidShare);
+        System.out.printf("Host/Hostess receives: $%.2f%n", hostShare);
+        System.out.printf("Busser receives: $%.2f%n", busserShare);
+        System.out.printf("Each server receives: $%.2f%n", serverSharePerPerson);
+    }
+}
