@@ -31,8 +31,8 @@ public class RestaurantCheckManager {
             }
             
             if (totalAmount < saleAmount) {
-                    totalAmount = saleAmount;  // Assume no tip if total < sale amount
-                    tipAmount = 0;
+                totalAmount = saleAmount;  // Assume no tip if total < sale amount
+                tipAmount = 0;
             }
 
             if (totalAmount != saleAmount + tipAmount) { 
@@ -57,6 +57,7 @@ public class RestaurantCheckManager {
             System.out.print("Do you want to stop (y/n): ");
             String input = scanner.next();
             if (input.equalsIgnoreCase("y")) break;
+            System.out.println(); //new line for more readability
         }
 
         // Final results and tip division
