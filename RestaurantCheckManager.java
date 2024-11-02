@@ -25,10 +25,20 @@ public class RestaurantCheckManager {
                 tipAmount = totalAmount - saleAmount;
                 if (tipAmount < 0) tipAmount = 0; // Negative tips become 0
             } 
+
+            if (totalAmount == 0){ //if not total amount given, calc total
+                totalAmount = tipAmount + saleAmount;
+            }
             
             if (totalAmount < saleAmount) {
-                totalAmount = saleAmount;  // Assume no tip if total < sale amount
-                tipAmount = 0;
+                    totalAmount = saleAmount;  // Assume no tip if total < sale amount
+                    tipAmount = 0;
+            }
+
+            if (totalAmount != saleAmount + tipAmount) { 
+                //if tip + sale doesn't equal total and total isnt less than sale amount
+                tipAmount = totalAmount - saleAmount;
+                if (tipAmount < 0) tipAmount = 0;
             }
 
             // Update cumulative totals
