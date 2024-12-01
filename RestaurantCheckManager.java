@@ -14,34 +14,45 @@ public class RestaurantCheckManager {
             System.out.printf("Total sale amount: ");
             double saleAmount = scanner.nextDouble();
 
-            System.out.printf("Tip amount: ");
+            System.out.print("Tip amount (or 0 if not provided): ");
             double tipAmount = scanner.nextDouble();
 
-            System.out.printf("Total amount: ");
+            System.out.print("Total amount (or 0 if not provided): ");
             double totalAmount = scanner.nextDouble();
 
-            // Handle edge cases and auto-calculate tip
+            // Edge case: neither tip nor total is provided
+            if (tipAmount == 0 && totalAmount == 0) {
+                totalAmount = saleAmount;  // Assume no tip
+            }
+
+            // Edge case: only total is provided
             if (tipAmount == 0) {
                 tipAmount = totalAmount - saleAmount;
-                if (tipAmount < 0) tipAmount = 0; // Negative tips become 0
-            } 
-
-            if (totalAmount == 0){ //if not total amount given, calc total
-                totalAmount = tipAmount + saleAmount;
+                if (tipAmount < 0) {
+                    tipAmount = 0;  // Correct negative tip
+                }
             }
-            
+
+            // Edge case: only tip is provided
+            if (totalAmount == 0) {
+                totalAmount = saleAmount + tipAmount;
+            }
+
+            // Edge case: total is less than sale amount
             if (totalAmount < saleAmount) {
-                totalAmount = saleAmount;  // Assume no tip if total < sale amount
+                totalAmount = saleAmount;  // Correct the total
                 tipAmount = 0;
             }
 
-            if (totalAmount != saleAmount + tipAmount) { 
-                //if tip + sale doesn't equal total and total isnt less than sale amount
+            // Edge case: mismatch between total, sale, and tip
+            if (totalAmount != saleAmount + tipAmount) {
                 tipAmount = totalAmount - saleAmount;
-                if (tipAmount < 0) tipAmount = 0;
+                if (tipAmount < 0) {
+                    tipAmount = 0;
+                }
             }
 
-            // Update cumulative totals
+            // Update cumulative totalsn
             totalSales += saleAmount;
             totalTips += tipAmount;
             completeTotal = totalSales + totalTips;
@@ -94,10 +105,3 @@ public class RestaurantCheckManager {
         System.out.printf("Busser gets: %.2f\n", busserShare);
     }
 }
-
-
-
-
-
-
-
