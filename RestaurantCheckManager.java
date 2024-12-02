@@ -20,36 +20,19 @@ public class RestaurantCheckManager {
             System.out.print("Total amount (or 0 if not provided): ");
             double totalAmount = scanner.nextDouble();
 
-            // Edge case: neither tip nor total is provided
-            if (tipAmount == 0 && totalAmount == 0) {
-                totalAmount = saleAmount;  // Assume no tip
+            // Handle missing values : Edge Cases
+            if (totalAmount == 0) {
+                totalAmount = saleAmount + tipAmount; // Calculate total when not provided
             }
-
-            // Edge case: only total is provided
             if (tipAmount == 0) {
-                tipAmount = totalAmount - saleAmount;
+                tipAmount = totalAmount - saleAmount; // Calculate tip when not provided
                 if (tipAmount < 0) {
                     tipAmount = 0;  // Correct negative tip
                 }
             }
-
-            // Edge case: only tip is provided
-            if (totalAmount == 0) {
-                totalAmount = saleAmount + tipAmount;
-            }
-
-            // Edge case: total is less than sale amount
             if (totalAmount < saleAmount) {
-                totalAmount = saleAmount;  // Correct the total
+                totalAmount = saleAmount;  // Ensure total is at least sale amount
                 tipAmount = 0;
-            }
-
-            // Edge case: mismatch between total, sale, and tip
-            if (totalAmount != saleAmount + tipAmount) {
-                tipAmount = totalAmount - saleAmount;
-                if (tipAmount < 0) {
-                    tipAmount = 0;
-                }
             }
 
             // Update cumulative totalsn
