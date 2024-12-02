@@ -105,10 +105,3 @@ public class RestaurantCheckManager {
         System.out.printf("Busser gets: %.2f\n", busserShare);
     }
 }
-
-
-
-
-
-
-
