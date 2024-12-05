@@ -37,6 +37,7 @@ public class RestaurantCheckManager {
 
             if (totalAmount != saleAmount + tipAmount) {
                 //if tip + sale doesn't equal total and total isn't less than sale amount
+                tipAmount = totalAmount - saleAmount;
                 if (tipAmount < 0) {
                     tipAmount = 0;
                 }
